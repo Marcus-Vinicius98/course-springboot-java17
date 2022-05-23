@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import br.com.study.springbootproject.entities.Category;
 import br.com.study.springbootproject.entities.Order;
+import br.com.study.springbootproject.entities.OrderItem;
 import br.com.study.springbootproject.entities.Product;
 import br.com.study.springbootproject.entities.User;
 import br.com.study.springbootproject.entities.enums.OrderStatus;
 import br.com.study.springbootproject.repositories.CategoryRepository;
+import br.com.study.springbootproject.repositories.OrderItemRepository;
 import br.com.study.springbootproject.repositories.OrderRepository;
 import br.com.study.springbootproject.repositories.ProductRepository;
 import br.com.study.springbootproject.repositories.UserRepository;
@@ -34,6 +36,9 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private ProductRepository productRepository;
 
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -50,6 +55,9 @@ public class TestConfig implements CommandLineRunner {
 		Product p1 = new Product(null, "Smart Tv", "Led", 3.200, "");
 		Product p2 = new Product(null, "Video-Game", "Last Generation", 4.200, "");
 
+		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+		OrderItem oi2 = new OrderItem(o1, p2, 1, p2.getPrice());
+		
 		
 
 		userRepository.saveAll(Arrays.asList(u1, u2));
@@ -60,6 +68,7 @@ public class TestConfig implements CommandLineRunner {
 		p1.getCategories().add(cat1);
 		p2.getCategories().add(cat1);
 		productRepository.saveAll(Arrays.asList(p1, p2));
+		orderItemRepository.saveAll(Arrays.asList(oi1,oi2));
 	}
 
 }
