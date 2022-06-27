@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.study.springbootproject.entities.enums.OrderStatus;
 
@@ -42,6 +43,7 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<OrderItem>();
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;
 
@@ -101,6 +103,14 @@ public class Order implements Serializable {
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+
+	public Double getTotal() {
+		double sum = 0.0;
+		for (OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
 	}
 
 	@Override
